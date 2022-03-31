@@ -7,6 +7,8 @@
         package - pickable
         mailbot - bot 
         delbot - bot
+        largepac - package
+        smallpac - package
     )
 
     (:predicates
@@ -75,9 +77,25 @@
     )
 )
 
+(:action pick-scanner
+    :parameters (?who - bot ?what - scanner ?where - cell)
+    :precondition (and (at ?who ?where)
+                       (at ?what ?where)
+                       (not (holding ?who ?what))
+                       (not (holding-pac ?who))
+                       (not (holding-scan ?who))
+    )
+    :effect (and (holding ?who ?what)
+                 (holding-pac ?who)
+                 (not (at ?what ?where))             
+    )
+    )
+)
 
-(:action pick-package
-    :parameters (?who - bot ?what - package ?where - cell)
+
+
+(:action pick-small-pack
+    :parameters (?who - bot ?what - smallpac ?where - cell)
     :precondition (and (at ?what ?where)
                        (at ?who ?where)
                        (not (holding ?who ?what))
@@ -88,6 +106,26 @@
                  (holding-pac ?who)
                  (not (at ?what ?where)))
 )
+
+(:action pick-large-pack
+    :parameters (?mbot - mailbot ?dbot - delbot ?what - largepac ?where - cell)
+    :precondition (and (at ?mbot ?where)
+                       (at ?dbot ?where)
+                       (not (holding ?mbot ?what))
+                       (not (holding ?dbot ?what))
+                       (not (holding-pac ?mbot))
+                       (not (holding-pac ?dbot))
+                       (not (holding-scan ?mbot))
+                       (not (holding-scan ?dbot))
+    )
+    :effect (and (holding ?mbot ?what)
+                 (holding ?dbot ?what)
+                 (holding-pac ?mbot)
+                 (holding-pac ?dbot)
+                 (not (at ?what ?where))
+    )        
+)
+
 
     
 (:action drop
