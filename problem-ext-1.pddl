@@ -3,6 +3,7 @@
 
     (:objects 
         the-mailbot - mailbot
+        the-delbot - delbot
         the-scanner - scanner
         the-switch - button
         the-charger - charger
@@ -21,17 +22,29 @@
     )
 
     (:init
+        ; Delivery bot
+        (at the-delbot cell-1-5)
+        (not (holding-pac the-delbot))
+        (not (holding-scan the-delbot))
+        (not (holding the-delbot the-scanner))
+        (not (holding the-delbot p001))
+        (not (holding the-delbot p010))
+        (not (holding the-delbot p011))
+
+        ;Delbot battery
+        (= (battery-level 10))
+        
         ; Mailbot
         (at the-mailbot cell-3-3)
         (not (holding-pac the-mailbot))
         (not (holding-scan the-mailbot))
-        (not (holding the-scanner))
-        (not (holding p001))
-        (not (holding p010))
-        (not (holding p011))
+        (not (holding the-mailbot the-scanner))
+        (not (holding the-mailbot p001))
+        (not (holding the-mailbot p010))
+        (not (holding the-mailbot p011))
 
         ; Mailbot battery
-        (= (battery-level the-mailbot) 15)
+        (= (battery-level the-mailbot) 10)
 
         ; Scanner
         (at the-scanner cell-1-1)

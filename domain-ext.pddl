@@ -2,9 +2,11 @@
 
     (:requirements :adl :fluents)
 
-    (:types cell button mailbot belt charger pickable - object
+    (:types cell button belt charger pickable - object bot - object
         scanner - pickable
         package - pickable
+        mailbot - bot 
+        delbot - bot
     )
 
     (:predicates
@@ -12,28 +14,28 @@
         (adj ?cell1 - cell ?cell2)    
         (switch-on ?button - button)
         (scanned ?package - package)
-        (holding ?what)
-        (holding-pac ?mailbot - mailbot)
-        (holding-scan ?mailbot - mailbot)
+        (holding ?who - bot ?what - object)
+        (holding-pac ?bot - bot)
+        (holding-scan ?bot - bot)
         (on-belt ?package - package)
     )
 
     (:functions
-        (battery-level ?who - mailbot)
+        (battery-level ?who - bot)
     )
 
 ;; Actions
 
 (:action recharge-bot
-    :parameters (?who - mailbot ?where - cell ?with - charger)
+    :parameters (?who - bot ?where - cell ?with - charger)
     :precondition (and (at ?who ?where)
                        (at ?with ?where)
     )
     :effect (and (assign (battery-level ?who) 15))
 )
 
-(:action move-mailbot
-    :parameters (?who - mailbot ?from - cell ?to - cell)
+(:action move-bot
+    :parameters (?who - bot ?from - cell ?to - cell)
     :precondition (and (at ?who ?from)
                        (adj ?from ?to)
                        (or 
@@ -60,14 +62,14 @@
 
 
 (:action pick-scanner
-    :parameters (?who - mailbot ?what - scanner ?where - cell)
+    :parameters (?who - bot ?what - scanner ?where - cell)
     :precondition (and (at ?who ?where)
                        (at ?what ?where)
-                       (not (holding ?what))
+                       (not (holding ?who ?what))
                        (not (holding-pac ?who))
                        (not (holding-scan ?who))
     )
-    :effect (and (holding ?what)
+    :effect (and (holding ?who ?what)
                  (holding-scan ?who)
                  (not (at ?what ?where))
     )
@@ -75,25 +77,25 @@
 
 
 (:action pick-package
-    :parameters (?who - mailbot ?what - package ?where - cell)
+    :parameters (?who - bot ?what - package ?where - cell)
     :precondition (and (at ?what ?where)
                        (at ?who ?where)
-                       (not (holding ?what))
+                       (not (holding ?who ?what))
                        (not (holding-pac ?who))
                        (not (holding-scan ?who))
     )
-    :effect (and (holding ?what)
+    :effect (and (holding ?who ?what)
                  (holding-pac ?who)
                  (not (at ?what ?where)))
 )
 
     
 (:action drop
-    :parameters (?who - mailbot ?where - cell ?what)
+    :parameters (?who - bot ?where - cell ?what)
     :precondition (and (at ?who ?where)
-                       (holding ?what)
+                       (holding ?who ?what)
     )
-    :effect (and (not (holding ?what))
+    :effect (and (not (holding ?who ?what))
                  (at ?what ?where)
                  (not(holding-pac ?who))
                  (not(holding-scan ?who)))
@@ -105,14 +107,14 @@
     :precondition (and (at ?who ?where)
                        (at ?what ?where)
                        (holding-scan ?who)
-                       (holding ?scanner)
+                       (holding ?who ?scanner)
                        (not(scanned ?what)))
     :effect (and (scanned ?what))
 )
     
     
 (:action switch-belt-on
-    :parameters (?who - mailbot ?where - cell ?button - button)
+    :parameters (?who - bot ?where - cell ?button - button)
     :precondition (and (not (switch-on ?button))
                        (at ?who ?where)
                        (at ?button ?where))
@@ -122,14 +124,14 @@
 
     
 (:action place-on-belt
-    :parameters (?who - mailbot ?what - package ?where - cell ?belt - belt)
+    :parameters (?who - bot ?what - package ?where - cell ?belt - belt)
     :precondition (and (at ?who ?where)
                        (adj ?where ?belt) 
                        (scanned ?what)
-                       (holding ?what)
+                       (holding ?who ?what)
     )
     :effect (and (on-belt ?what)
-                 (not (holding ?what))
+                 (not (holding ?who ?what))
                  (not (holding-pac ?who))
     )
 )
