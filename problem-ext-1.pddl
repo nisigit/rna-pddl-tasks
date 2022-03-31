@@ -30,6 +30,9 @@
         (not (holding p010))
         (not (holding p011))
 
+        ; Mailbot battery
+        (= (battery-level the-mailbot) 15)
+
         ; Scanner
         (at the-scanner cell-1-1)
 
@@ -98,8 +101,8 @@
 
     (:goal (and (scanned p001)
                 (on-belt p001)
-                (scanned p011)
-                (on-belt p011)
+                (scanned p010)
+                (on-belt p010)
                 (switch-on the-switch)
     ))
 

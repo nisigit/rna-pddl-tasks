@@ -2,7 +2,10 @@
 
     (:requirements :adl :fluents)
 
-    (:types cell scanner package button mailbot belt charger)
+    (:types cell button mailbot belt charger pickable - object
+        scanner - pickable
+        package - pickable
+    )
 
     (:predicates
         (at ?p1 ?p2)
@@ -26,22 +29,31 @@
     :precondition (and (at ?who ?where)
                        (at ?with ?where)
     )
-    :effect (and ((assign (battery-level ?who) 15)))
+    :effect (and (assign (battery-level ?who) 15))
 )
-
 
 (:action move-mailbot
     :parameters (?who - mailbot ?from - cell ?to - cell)
     :precondition (and (at ?who ?from)
                        (adj ?from ?to)
+                       (or 
+                            (and 
+                                (or (holding-pac ?who) (holding-scan ?who)) 
+                                (>= (battery-level ?who) 2)
+                            )
+                            (and (not (holding-pac ?who)) 
+                                (not (holding-scan ?who))
+                                (>= (battery-level ?who) 1)
+                            )
+                        )
     )
-    :effect (and (not (at ?who ?from))
-                 (at ?who ?to)
-                 (when (or ((holding-pac ?who) (holding-scan ?who)))
-                    (decrease (battery-level ?who) 2)
+    :effect (and (at ?who ?to)
+                 (not (at ?who ?from))
+                 (when (or (holding-pac ?who) (holding-scan ?who))
+                       (decrease (battery-level ?who) 2)
                  )
-                 (when (and ((not (holding-pac ?who)) (not (holding-scan ?who))))
-                    (decrease (battery-level ?who) 1)
+                 (when (not (or (holding-pac ?who) (holding-scan ?who)))
+                       (decrease (battery-level ?who) 1)
                  )
     )
 )
@@ -57,7 +69,8 @@
     )
     :effect (and (holding ?what)
                  (holding-scan ?who)
-                 (not (at ?what ?where)))
+                 (not (at ?what ?where))
+    )
 )
 
 
