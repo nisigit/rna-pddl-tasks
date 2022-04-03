@@ -12,8 +12,8 @@
     )
 
     (:predicates
-        (at ?p1 ?p2)
-        (adj ?cell1 - cell ?cell2)    
+        (at ?p1 - object ?p2 - cell)
+        (adj ?cell1 - cell ?cell2 - object)    
         (switch-on ?button - button)
         (scanned ?package - package)
         (holding ?who - bot)
@@ -72,6 +72,8 @@
                        (bot-holding ?db ?what)
                        (>= (battery-level ?mb) 2)
                        (>= (battery-level ?db) 2)
+                       (holding ?mb)
+                       (holding ?db)
     )
     :effect (and (at ?mb ?to)
                  (at ?db ?to)
@@ -88,6 +90,7 @@
     :precondition (and (at ?what ?where)
                        (at ?who ?where)
                        (not (holding ?who))
+                       (not (bot-holding ?who ?what))
     )
     :effect (and (holding ?who)
                  (not (at ?what ?where))
@@ -103,12 +106,14 @@
                        (at ?db ?where)
                        (not (holding ?mb))
                        (not (holding ?db))
+                       (not (bot-holding ?mb ?what))
+                       (not (bot-holding ?db ?what))
     )
     :effect (and (holding ?mb)
                  (holding ?db)
                  (not (at ?db ?where))
                  (bot-holding ?mb ?what)
-                 (bot-holding ?mb ?what)
+                 (bot-holding ?db ?what)
     ) 
 )
 
@@ -116,6 +121,7 @@
     :parameters (?who - bot ?what - smallpac ?where - cell)
     :precondition (and (at ?who ?where)
                        (bot-holding ?who ?what)
+                       (holding ?who)
     )
     :effect (and (at ?what ?where)
                  (not (holding ?who))
@@ -140,7 +146,7 @@
 
 ;; Scanner actions
 (:action pick-scanner
-    :parameters (?who - bot ?what - scanner ?where - cell)
+    :parameters (?who - mailbot ?what - scanner ?where - cell)
     :precondition (and (at ?who ?where)
                        (at ?what ?where)
                        (not (holding ?who))
@@ -152,7 +158,7 @@
 )
 
 (:action drop-scanner
-    :parameters (?who - bot ?what - scanner ?where - cell)
+    :parameters (?who - mailbot ?what - scanner ?where - cell)
     :precondition (and (at ?who ?where)
                        (bot-holding ?who ?what)
     )
@@ -168,6 +174,7 @@
     :precondition (and (at ?who ?where)
                        (at ?what ?where)
                        (bot-holding ?who ?scanner)
+                       (holding ?who)
                        (not (scanned ?what))
     )
     :effect (and (scanned ?what))
@@ -188,6 +195,7 @@
                        (adj ?where ?belt)
                        (scanned ?what)
                        (bot-holding ?who ?what)
+                       (not (on-belt ?what))
     )
     :effect (and (on-belt ?what)
                  (not (holding ?who))
@@ -196,13 +204,14 @@
 )
 
 (:action place-large-pack-on-belt
-    :parameters (?mb - mailbot ?db - delbot ?what - smallpac ?where - cell ?belt - belt)
+    :parameters (?mb - mailbot ?db - delbot ?what - largepac ?where - cell ?belt - belt)
     :precondition (and (at ?mb ?where)
                        (at ?db ?where)
                        (adj ?where ?belt)
                        (scanned ?what)
                        (bot-holding ?mb ?what)
                        (bot-holding ?db ?what)
+                       (not (on-belt ?what))
     )
     :effect (and (on-belt ?what)
                  (not (holding ?mb))
@@ -211,6 +220,4 @@
                  (not (bot-holding ?db ?what))
     )
 )
-
-
 )

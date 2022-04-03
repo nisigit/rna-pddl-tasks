@@ -51,9 +51,9 @@
         (not (scanned p010))
         (not (scanned p011))
 
-        (not(on-belt p001))
-        (not(on-belt p010))
-        (not(on-belt p011))
+        (not (on-belt p001))
+        (not (on-belt p010))
+        (not (on-belt p011))
 
         ; row adjacency
         (adj cell-1-1 cell-1-2) (adj cell-1-2 cell-1-1)
