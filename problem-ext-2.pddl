@@ -7,9 +7,9 @@
         the-scanner - scanner
         the-switch - button
         the-charger - charger
-        p001 - smallpac
-        p010 - smallpac
-        p011 - largepac
+        p001 - lightpack
+        p010 - lightpack 
+        p011 - heavypack 
 
         the-belt - belt
 

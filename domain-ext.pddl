@@ -1,223 +1,236 @@
 (define (domain domain-ext)
 
     (:requirements :adl :fluents)
-
-    (:types cell button belt bot charger pickable - object
-        scanner - pickable
-        package - pickable
-        smallpac - package
-        largepac - package
+    (:types bot belt package scanner button cell charger - object
         mailbot - bot
         delbot - bot
-    )
-
-    (:predicates
-        (at ?p1 - object ?p2 - cell)
-        (adj ?cell1 - cell ?cell2 - object)    
-        (switch-on ?button - button)
+        lightpack - package
+        heavypack - package
+    ) 
+    
+    (:predicates 
+        (adj ?cell1 - cell ?cell2 - object)
         (scanned ?package - package)
+        (switch-on ?what - button)
+        (bot-holding ?who - bot ?what - object)
+        (at ?what - object ?where - cell)
         (holding ?who - bot)
-        (bot-holding ?who - bot ?what - object) 
         (on-belt ?package - package)
     )
-
     (:functions
-        (battery-level ?who - bot)
+        (battery-level ?bot - bot)
+    )
+
+    (:action move-not-holding 
+        :parameters (?who - bot ?from - cell ?to - cell)
+        :precondition (and 
+            (at ?who ?from)
+            (adj ?from ?to)
+            (>= (battery-level ?who) 1)
+            (not (holding ?who))
+        )
+        :effect (and 
+            (not(at ?who ?from))
+            (at ?who ?to)
+            (decrease (battery-level ?who) 1)
+        ))
+    (:action move-holding
+        :parameters (?who - bot ?from - cell ?to - cell)
+        :precondition (and 
+            (at ?who ?from)
+            (adj ?from ?to)
+            (>= (battery-level ?who) 2)
+            (holding ?who)
+        )
+        :effect (and 
+            (not(at ?who ?from))
+            (at ?who ?to)
+            (decrease (battery-level ?who) 2)
+        ))
+       (:action move-with-heavypack
+        :parameters (?mb - mailbot ?db - delbot ?from - cell ?to - cell ?what - heavypack)
+        :precondition (and 
+            (at ?mb ?from)
+            (at ?db ?from)
+            (adj ?from ?to)
+            (>= (battery-level ?mb) 2)
+            (>= (battery-level ?db) 2)
+            (bot-holding ?mb ?what)
+            (bot-holding ?db ?what)
+        )
+        :effect (and 
+            (not (at ?mb ?from))
+            (at ?mb ?to)
+            (decrease (battery-level ?mb) 2)
+            (not (at ?db ?from))
+            (at ?db ?to)
+            (decrease (battery-level ?db) 2)
+        ))
+
+    (:action pick-scanner 
+        :parameters (?who - mailbot ?what - scanner ?where - cell)
+        :precondition (and
+            (at ?who ?where)
+            (at ?what ?where)
+            (not(holding ?who)) 
+            )
+
+        :effect (and 
+            (not(at ?what ?where))
+            (bot-holding ?who ?what)
+            (holding ?who)
+        )
+    )
+
+    (:action pick-lightpack 
+        :parameters (?who - bot ?what - lightpack ?where - cell)
+        :precondition (and 
+            (at ?who ?where)
+            (at ?what ?where)
+            (>= (battery-level ?who) 1)
+            (not (holding ?who))
+        )
+        :effect (and 
+            (not(at ?what ?where))
+            (bot-holding ?who ?what)
+            (holding ?who)
+        )
+    )
+
+    (:action pick-heavypack
+        :parameters (?mb - mailbot ?db - delbot ?what - heavypack ?where - cell)
+        :precondition (and 
+            (at ?mb ?where)
+            (at ?db ?where)
+            (at ?what ?where)
+            (not (holding ?mb))
+            (not (holding ?db))
+        )
+        :effect (and 
+            (not (at ?what ?where))
+            (bot-holding ?mb ?what)
+            (bot-holding ?mb ?what)
+            (holding ?mb)
+            (holding ?db)
+        )
+    )
+
+    (:action drop-lightpack 
+        :parameters (?who - bot ?what - lightpack ?where - cell)
+        :precondition (and
+            (at ?who ?where)
+            (bot-holding ?who ?what)
+        )
+        :effect (and 
+            (at ?what ?where)
+            (not (bot-holding ?who ?what))
+            (not (holding ?who))
+        )
+    )
+
+    (:action drop-scanner 
+        :parameters (?who - mailbot ?what - scanner ?where - cell)
+        :precondition (and
+            (at ?who ?where)
+            (bot-holding ?who ?what)
+            (>= (battery ?who) 1)
+        )
+        :effect (and 
+            (at ?what ?where)
+            (not(bot-holding ?who ?what))
+            (not(holding ?who))
+        )
+    )
+
+    (:action drop-heavypack 
+        :parameters (?mb - mailbot ?db - delbot ?what - heavypack ?where - cell)
+        :precondition (and
+            (at ?mb ?where)
+            (at ?db ?where)
+            (bot-holding ?mb ?what)
+            (bot-holding ?db ?what)
+        )
+        :effect (and 
+            (at ?what ?where)
+            (not (bot-holding ?mb ?what))
+            (not (bot-holding ?db ?what))
+            (not (holding ?mb))
+            (not (holding ?mb))
+        )
     )
 
 
-;; Actions
 
-(:action recharge-bot
-    :parameters (?who - bot ?where - cell ?with - charger)
-    :precondition (and (at ?who ?where)
-                       (at ?with ?where)
+    (:action switch-belt-on 
+        :parameters (?who - bot ?what - button ?where - cell)
+        :precondition (and 
+            (not (switch-on ?what))
+            (at ?what ?where)
+            (at ?who ?where)
+         )
+        :effect (and 
+            (switch-on ?what)
+        )
     )
-    :effect (and (assign (battery-level ?who) 15))
+
+    (:action scan-pack 
+        :parameters (?who - mailbot ?what - package ?how - scanner ?where - cell)
+        :precondition (and 
+            (not (scanned ?what))
+            (at ?what ?where)
+            (at ?who ?where)
+            (bot-holding ?who ?how)        
+        )
+        :effect (and 
+            (scanned ?what)
+        )
+    )
+    (:action place-lightpack-on-belt 
+        :parameters (?who - bot ?what - lightpack ?belt - belt ?where - cell)
+        :precondition (and 
+            (bot-holding ?who ?what)
+            (at ?who ?where)
+            (adj ?where ?belt)
+            (scanned ?what)
+            (not (on-belt ?what))
+        )
+        :effect (and 
+            (not(bot-holding ?who ?what))
+            (not(holding ?who))
+            (on-belt ?what)
+        )
+    )
+
+    (:action place-heavypack-on-belt 
+        :parameters (?mb - mailbot ?db - delbot ?what - heavypack ?belt - belt ?where - cell)
+        :precondition (and 
+            (bot-holding ?mb ?what)
+            (bot-holding ?db ?what)
+            (at ?mb ?where)
+            (at ?db ?where)
+            (adj ?where ?belt)
+            (scanned ?what)
+            (not (on-belt ?what))
+        )
+        :effect (and 
+            (not (bot-holding ?mb ?what))
+            (not (bot-holding ?db ?what))
+            (not (holding ?mb))
+            (not (holding ?db))
+            (on-belt ?what)
+        )
+    )
+
+    (:action recharge
+        :parameters (?who - bot ?where - cell ?how - charger)
+        :precondition (and 
+            (at ?who ?where)
+            (at ?how ?where)
+
+        )
+        :effect (and
+            (assign (battery-level ?who) 15)
+         )
+    )
 )
 
-; Move either bot
-(:action move-bot-holding
-    :parameters (?who - bot ?from - cell ?to - cell)
-    :precondition (and (at ?who ?from)
-                       (adj ?from ?to)                
-                       (holding ?who)
-                       (>= (battery-level ?who) 2)
-    )
-    :effect (and (at ?who ?to)
-                 (not (at ?who ?from))
-                 (decrease (battery-level ?who) 2)
-    )
-)
-
-(:action move-bot-not-holding
-    :parameters (?who - bot ?from - cell ?to - cell)
-    :precondition (and (at ?who ?from)
-                       (adj ?from ?to)
-                       (not (holding ?who))
-                       (>= (battery-level ?who) 1)
-    )
-    :effect (and (at ?who ?to)
-                 (not (at ?who ?from))
-                 (decrease (battery-level ?who) 1)
-    )
-)
-
-(:action move-bots-holding
-    :parameters (?mb - mailbot ?db - delbot ?what - largepac ?from - cell ?to - cell)
-    :precondition (and (at ?mb ?from)
-                       (at ?db ?from)
-                       (adj ?from ?to)
-                       (bot-holding ?mb ?what)
-                       (bot-holding ?db ?what)
-                       (>= (battery-level ?mb) 2)
-                       (>= (battery-level ?db) 2)
-                       (holding ?mb)
-                       (holding ?db)
-    )
-    :effect (and (at ?mb ?to)
-                 (at ?db ?to)
-                 (not (at ?mb ?from))
-                 (not (at ?db ?from))
-                 (decrease (battery-level ?mb) 2)
-                 (decrease (battery-level ?db) 2)
-    )
-)
-
-
-(:action pick-small-pack
-    :parameters (?who - bot ?what - smallpac ?where - cell)
-    :precondition (and (at ?what ?where)
-                       (at ?who ?where)
-                       (not (holding ?who))
-                       (not (bot-holding ?who ?what))
-    )
-    :effect (and (holding ?who)
-                 (not (at ?what ?where))
-                 (bot-holding ?who ?what)
-    )
-)
-
-
-(:action pick-large-pack
-    :parameters (?mb - mailbot ?db - delbot ?what - largepac ?where - cell)
-    :precondition (and (at ?what ?where)
-                       (at ?mb ?where)
-                       (at ?db ?where)
-                       (not (holding ?mb))
-                       (not (holding ?db))
-                       (not (bot-holding ?mb ?what))
-                       (not (bot-holding ?db ?what))
-    )
-    :effect (and (holding ?mb)
-                 (holding ?db)
-                 (not (at ?db ?where))
-                 (bot-holding ?mb ?what)
-                 (bot-holding ?db ?what)
-    ) 
-)
-
-(:action drop-small-pack
-    :parameters (?who - bot ?what - smallpac ?where - cell)
-    :precondition (and (at ?who ?where)
-                       (bot-holding ?who ?what)
-                       (holding ?who)
-    )
-    :effect (and (at ?what ?where)
-                 (not (holding ?who))
-                 (not (bot-holding ?who ?what))
-    )
-)
-
-(:action drop-large-pack
-    :parameters (?mb - mailbot ?db - delbot ?what - largepac ?where - cell)
-    :precondition (and (at ?mb ?where)
-                       (at ?db ?where)
-                       (bot-holding ?mb ?what)
-                       (bot-holding ?db ?what)
-    )
-    :effect (and (at ?what ?where)
-                 (not (bot-holding ?mb ?what))
-                 (not (bot-holding ?db ?what))
-                 (not (holding ?mb))
-                 (not (holding ?db))
-    )
-)
-
-;; Scanner actions
-(:action pick-scanner
-    :parameters (?who - mailbot ?what - scanner ?where - cell)
-    :precondition (and (at ?who ?where)
-                       (at ?what ?where)
-                       (not (holding ?who))
-    )
-    :effect (and (bot-holding ?who ?what)
-                 (holding ?who)
-                 (not (at ?what ?where))
-    )
-)
-
-(:action drop-scanner
-    :parameters (?who - mailbot ?what - scanner ?where - cell)
-    :precondition (and (at ?who ?where)
-                       (bot-holding ?who ?what)
-    )
-    :effect (and (at ?what ?where)
-                 (not (bot-holding ?who ?what))
-                 (not (holding ?who))
-    )
-)
-
-
-(:action scan
-    :parameters (?who - mailbot ?what - package ?where - cell ?scanner - scanner)
-    :precondition (and (at ?who ?where)
-                       (at ?what ?where)
-                       (bot-holding ?who ?scanner)
-                       (holding ?who)
-                       (not (scanned ?what))
-    )
-    :effect (and (scanned ?what))
-)
-    
-    
-(:action switch-belt-on
-    :parameters (?who - bot ?where - cell ?button - button)
-    :precondition (and (not (switch-on ?button))
-                       (at ?who ?where)
-                       (at ?button ?where))
-    :effect (and (switch-on ?button))
-)
-
-(:action place-small-pack-on-belt
-    :parameters (?who - bot ?what - smallpac ?where - cell ?belt - belt)
-    :precondition (and (at ?who ?where)
-                       (adj ?where ?belt)
-                       (scanned ?what)
-                       (bot-holding ?who ?what)
-                       (not (on-belt ?what))
-    )
-    :effect (and (on-belt ?what)
-                 (not (holding ?who))
-                 (not (bot-holding ?who ?what))
-    )
-)
-
-(:action place-large-pack-on-belt
-    :parameters (?mb - mailbot ?db - delbot ?what - largepac ?where - cell ?belt - belt)
-    :precondition (and (at ?mb ?where)
-                       (at ?db ?where)
-                       (adj ?where ?belt)
-                       (scanned ?what)
-                       (bot-holding ?mb ?what)
-                       (bot-holding ?db ?what)
-                       (not (on-belt ?what))
-    )
-    :effect (and (on-belt ?what)
-                 (not (holding ?mb))
-                 (not (holding ?db))
-                 (not (bot-holding ?mb ?what))
-                 (not (bot-holding ?db ?what))
-    )
-)
-)
