@@ -1,2 +1,4 @@
 Metric-FF-v2.1/
 .DS_Store
+*.jar
+*.py

@@ -24,25 +24,13 @@
     (:init
         ; Delivery bot
         (at the-delbot cell-1-5)
-        (not (holding-pac the-delbot))
-        (not (holding-scan the-delbot))
-        (not (holding the-delbot the-scanner))
-        (not (holding the-delbot p001))
-        (not (holding the-delbot p010))
-        (not (holding the-delbot p011))
-
+        (not (holding the-delbot))
         ;Delbot battery
         (= (battery-level the-delbot 10))
         
         ; Mailbot
         (at the-mailbot cell-3-3)
-        (not (holding-pac the-mailbot))
-        (not (holding-scan the-mailbot))
-        (not (holding the-mailbot the-scanner))
-        (not (holding the-mailbot p001))
-        (not (holding the-mailbot p010))
-        (not (holding the-mailbot p011))
-
+        (not (holding the-mailbot))
         ; Mailbot battery
         (= (battery-level the-mailbot) 10)
 
@@ -109,7 +97,6 @@
         (adj cell-2-3 belt-2-4) 
         (adj cell-3-4 belt-2-4) 
         (adj cell-3-5 belt-2-5) 
-
     )
 
     (:goal (and (scanned p011)
