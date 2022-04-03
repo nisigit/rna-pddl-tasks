@@ -11,8 +11,7 @@
         p010 - smallpac
         p011 - largepac
 
-        belt-2-4 - belt
-        belt-2-5 - belt
+        the-belt - belt
 
         cell-1-1 cell-1-2 cell-1-3 cell-1-4 cell-1-5 - cell
         cell-2-1 cell-2-2 cell-2-3 - cell
@@ -26,7 +25,7 @@
         (at the-delbot cell-1-5)
         (not (holding the-delbot))
         ;Delbot battery
-        (= (battery-level the-delbot 10))
+        (= (battery-level the-delbot ) 10)
         
         ; Mailbot
         (at the-mailbot cell-3-3)
@@ -92,11 +91,11 @@
         (adj cell-4-5 cell-5-5) (adj cell-5-5 cell-4-5)
 
         ; adjacent to belt
-        (adj cell-1-4 belt-2-4) 
-        (adj cell-1-5 belt-2-5) 
-        (adj cell-2-3 belt-2-4) 
-        (adj cell-3-4 belt-2-4) 
-        (adj cell-3-5 belt-2-5) 
+        (adj cell-1-4 the-belt) 
+        (adj cell-1-5 the-belt) 
+        (adj cell-2-3 the-belt) 
+        (adj cell-3-4 the-belt) 
+        (adj cell-3-5 the-belt) 
     )
 
     (:goal (and (scanned p011)

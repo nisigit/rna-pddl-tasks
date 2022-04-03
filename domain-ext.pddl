@@ -157,7 +157,7 @@
                        (bot-holding ?who ?what)
     )
     :effect (and (at ?what ?where)
-                 (not (bot-holding ?what))
+                 (not (bot-holding ?who ?what))
                  (not (holding ?who))
     )
 )
