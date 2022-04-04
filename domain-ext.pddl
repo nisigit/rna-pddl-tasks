@@ -1,15 +1,17 @@
 (define (domain domain-ext)
 
     (:requirements :adl :fluents)
-    (:types bot belt package scanner button cell charger - object
+    (:types bot package scanner button charger area - object
         mailbot - bot
         delbot - bot
+        cell - area
+        belt - area
         lightpack - package
         heavypack - package
     ) 
     
     (:predicates 
-        (adj ?cell1 - cell ?cell2 - object)
+        (adj ?cell1 - area ?cell2 - area)
         (scanned ?package - package)
         (switch-on ?what - button)
         (bot-holding ?who - bot ?what - object)

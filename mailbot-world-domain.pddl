@@ -2,14 +2,17 @@
 
     (:requirements :adl)
 
-    (:types cell scanner package button mailbot belt)
+    (:types scanner package button mailbot area - object
+        cell - area
+        belt - area
+    )
 
     (:predicates
-        (at ?p1 ?p2)
-        (adj ?cell1 - cell ?cell2)    
+        (at ?p1 - object ?p2 - cell)
+        (adj ?cell1 - area ?cell2 - area)    
         (switch-on ?button - button)
         (scanned ?package - package)
-        (holding ?what)
+        (holding ?what - object)
         (holding-pac ?mailbot - mailbot)
         (holding-scan ?mailbot - mailbot)
         (on-belt ?package - package)
