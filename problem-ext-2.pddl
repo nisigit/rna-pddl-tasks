@@ -76,6 +76,6 @@
     (:goal (and
         (on-belt p011)
         (scanned p011)
-        (switch-on Button)
+        (switch-on the-button)
     ))
 )
