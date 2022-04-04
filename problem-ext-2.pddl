@@ -72,6 +72,7 @@
         (at the-delbot cell-1-5)
     )
     (:goal (and
-        (scanned p011)(on-belt p011)(switch-on the-button)
+        ; (scanned p011)(on-belt p011)(switch-on the-button)
+        (at the-mailbot cell-3-4)
     ))
 )

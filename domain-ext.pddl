@@ -57,6 +57,8 @@
             (>= (battery-level ?db) 2)
             (bot-holding ?mb ?what)
             (bot-holding ?db ?what)
+            (holding ?mb)
+            (holding ?db)
         )
         :effect (and 
             (not (at ?mb ?from))
@@ -72,7 +74,9 @@
         :precondition (and
             (at ?who ?where)
             (at ?what ?where)
-            (not(holding ?who)) 
+            (not (holding ?who)) 
+            (not (bot-holding ?who ?what))
+            (>= (battery-level ?who) 1)
             )
 
         :effect (and 
@@ -89,6 +93,7 @@
             (at ?what ?where)
             (>= (battery-level ?who) 1)
             (not (holding ?who))
+            (not (bot-holding ?who ?what))
         )
         :effect (and 
             (not(at ?what ?where))
@@ -103,8 +108,12 @@
             (at ?mb ?where)
             (at ?db ?where)
             (at ?what ?where)
+            (>= (battery-level ?mb) 1)
+            (>= (battery-level ?db) 1)
             (not (holding ?mb))
             (not (holding ?db))
+            (not (bot-holding ?mb ?what))
+            (not (bot-holding ?db ?what))
         )
         :effect (and 
             (not (at ?what ?where))
@@ -120,6 +129,8 @@
         :precondition (and
             (at ?who ?where)
             (bot-holding ?who ?what)
+            (holding ?who)
+            (>= (battery-level ?who) 1)
         )
         :effect (and 
             (at ?what ?where)
@@ -133,6 +144,7 @@
         :precondition (and
             (at ?who ?where)
             (bot-holding ?who ?what)
+            (holding ?who)
             (>= (battery-level ?who) 1)
         )
         :effect (and 
@@ -148,7 +160,11 @@
             (at ?mb ?where)
             (at ?db ?where)
             (bot-holding ?mb ?what)
+            (holding ?mb)
+            (>= (battery-level ?mb) 1)
             (bot-holding ?db ?what)
+            (holding ?db)
+            (>= (battery-level ?db) 1)
         )
         :effect (and 
             (at ?what ?where)
@@ -160,13 +176,13 @@
     )
 
 
-
     (:action switch-belt-on 
         :parameters (?who - bot ?what - button ?where - cell)
         :precondition (and 
             (not (switch-on ?what))
             (at ?what ?where)
             (at ?who ?where)
+            (>= (battery-level ?who) 1)
          )
         :effect (and 
             (switch-on ?what)
@@ -177,6 +193,7 @@
         :parameters (?who - mailbot ?what - package ?how - scanner ?where - cell)
         :precondition (and 
             (not (scanned ?what))
+            (>= (battery-level ?who) 1)
             (at ?what ?where)
             (at ?who ?where)
             (bot-holding ?who ?how)        
@@ -190,6 +207,7 @@
         :precondition (and 
             (bot-holding ?who ?what)
             (at ?who ?where)
+            (>= (battery-level ?who) 1)
             (adj ?where ?belt)
             (scanned ?what)
             (not (on-belt ?what))
@@ -208,6 +226,8 @@
             (bot-holding ?db ?what)
             (at ?mb ?where)
             (at ?db ?where)
+            (>= (battery-level ?mb) 1)
+            (>= (battery-level ?db) 1)
             (adj ?where ?belt)
             (scanned ?what)
             (not (on-belt ?what))
