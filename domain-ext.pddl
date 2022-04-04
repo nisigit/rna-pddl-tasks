@@ -108,8 +108,6 @@
             (at ?mb ?where)
             (at ?db ?where)
             (at ?what ?where)
-            (>= (battery-level ?mb) 1)
-            (>= (battery-level ?db) 1)
             (not (holding ?mb))
             (not (holding ?db))
             (not (bot-holding ?mb ?what))
@@ -118,7 +116,7 @@
         :effect (and 
             (not (at ?what ?where))
             (bot-holding ?mb ?what)
-            (bot-holding ?mb ?what)
+            (bot-holding ?db ?what)
             (holding ?mb)
             (holding ?db)
         )
