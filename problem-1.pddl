@@ -20,7 +20,7 @@
 
     (:init
         ; Mailbot
-        (at the-mailbot cell-3-3)
+        (at the-mailbot c33)
         (not (holding-pac the-mailbot))
         (not (holding-scan the-mailbot))
         (not (holding the-scanner))
@@ -36,9 +36,9 @@
         (not (switch-on the-switch))
 
         ; packages
-        (at p001 51)
-        (at p010 53)
-        (at p011 55)
+        (at p001 c51)
+        (at p010 c53)
+        (at p011 c55)
         (not (scanned p001))
         (not (scanned p010))
         (not (scanned p011))
