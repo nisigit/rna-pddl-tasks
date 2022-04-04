@@ -1,11 +1,12 @@
 (define (problem problem-ext-2)
     (:domain domain-ext)
     (:objects 
-        cell-1-1 cell-1-2 cell-1-3 cell-1-4 cell-1-5 - cell
-        cell-2-1 cell-2-2 cell-2-3 - cell
-        cell-3-1 cell-3-2 cell-3-3 cell-3-4 cell-3-5 - cell
-        cell-4-1 cell-4-2 cell-4-3 cell-4-4 cell-4-5 - cell
-        cell-5-1 cell-5-2 cell-5-3 cell-5-4 cell-5-5 - cell
+        c11 c12 c13 c14 c15 - cell
+        c21 c22 c23 c24 c25 - cell
+        c31 c32 c33 c34 c35 - cell
+        c41 c42 c43 c44 c45 - cell
+        c51 c52 c53 c54 c55 - cell
+
         the-mailbot - mailbot
         the-belt - belt 
         p001 - lightpack 
@@ -15,65 +16,66 @@
         the-button - button 
         the-charger - charger 
         the-delbot - delbot 
-               
     )
     
     (:init
-        (adj cell-1-1 cell-1-2) (adj cell-1-2 cell-1-1)
-        (adj cell-1-3 cell-1-4) (adj cell-1-4 cell-1-3)
-        (adj cell-1-4 cell-1-5) (adj cell-1-5 cell-1-4)
-        (adj cell-2-1 cell-2-2) (adj cell-2-2 cell-2-1)
-        (adj cell-2-2 cell-2-3) (adj cell-2-3 cell-2-2)
-        (adj cell-3-1 cell-3-2) (adj cell-3-2 cell-3-1)
-        (adj cell-3-2 cell-3-3) (adj cell-3-3 cell-3-2)
-        (adj cell-3-3 cell-3-4) (adj cell-3-4 cell-3-3)
-        (adj cell-3-4 cell-3-5) (adj cell-3-5 cell-3-4)
-        (adj cell-4-1 cell-4-2) (adj cell-4-2 cell-4-1)
-        (adj cell-4-2 cell-4-3) (adj cell-4-3 cell-4-2)
-        (adj cell-4-3 cell-4-4) (adj cell-4-4 cell-4-3)
-        (adj cell-4-4 cell-4-5) (adj cell-4-5 cell-4-4)
-        (adj cell-5-1 cell-5-2) (adj cell-5-2 cell-5-1)
-        (adj cell-5-2 cell-5-3) (adj cell-5-3 cell-5-2)
-        (adj cell-5-3 cell-5-4) (adj cell-5-4 cell-5-3)
-        (adj cell-5-4 cell-5-5) (adj cell-5-5 cell-5-4)
+        (adj c23 the-belt)
+        (adj c35 the-belt) 
+        (adj c15 the-belt)
+        (adj c34 the-belt) 
+        (adj c14 the-belt)
 
-        ; same column adjacency
-        (adj cell-1-1 cell-2-1) (adj cell-2-1 cell-1-1)
-        (adj cell-3-1 cell-4-1) (adj cell-4-1 cell-3-1)
-        (adj cell-4-1 cell-5-1) (adj cell-5-1 cell-4-1)
-        (adj cell-1-2 cell-2-2) (adj cell-2-2 cell-1-2)
-        (adj cell-3-2 cell-4-2) (adj cell-4-2 cell-3-2)
-        (adj cell-4-2 cell-5-2) (adj cell-5-2 cell-4-2)
-        (adj cell-1-3 cell-2-3) (adj cell-2-3 cell-1-3)
-        (adj cell-2-3 cell-3-3) (adj cell-3-3 cell-2-3)
-        (adj cell-3-3 cell-4-3) (adj cell-4-3 cell-3-3)
-        (adj cell-4-3 cell-5-3) (adj cell-5-3 cell-4-3)
-        (adj cell-3-4 cell-4-4) (adj cell-4-4 cell-3-4)
-        (adj cell-4-4 cell-5-4) (adj cell-5-4 cell-4-4)
-        (adj cell-3-5 cell-4-5) (adj cell-4-5 cell-3-5)
-        (adj cell-4-5 cell-5-5) (adj cell-5-5 cell-4-5)
+        (at p001 c51) 
+        (at p010 c53) 
+        (at p011 c55)
+        
+        (at the-button c35) 
 
-        ; adjacent to belt
-        (adj cell-1-4 the-belt) 
-        (adj cell-1-5 the-belt)
-        (adj cell-2-3 the-belt)
-        (adj cell-3-4 the-belt)
-        (adj cell-3-5 the-belt)
+        (at the-scanner c11)
 
-        (at p001 cell-5-1) 
-        (at p010 cell-5-3) 
-        (at p011 cell-5-5)
-        (at the-button cell-3-5) 
-        (at the-scanner cell-1-1) 
-        (at the-mailbot cell-3-3)
-        (at the-charger cell-3-1)
+        (at the-mailbot c33)
+        (at the-delbot c15)
+
+        (at the-charger c31)
+
         (= (battery-level the-mailbot) 10)
         (= (battery-level the-delbot) 10)
-        (at the-delbot cell-1-5)
+
+        (adj c51 c52)  (adj c52 c51)  
+        (adj c52 c53)  (adj c53 c52)
+        (adj c53 c54)  (adj c54 c53)
+        (adj c54 c55)  (adj c55 c54)
+        (adj c41 c42)  (adj c42 c41)
+        (adj c42 c43)  (adj c43 c42)
+        (adj c43 c44)  (adj c44 c43)
+        (adj c44 c45)  (adj c45 c44)
+        (adj c31 c32)  (adj c32 c31)
+        (adj c32 c33)  (adj c33 c32)
+        (adj c33 c34)  (adj c34 c33)
+        (adj c34 c35)  (adj c35 c34)
+        (adj c21 c22)  (adj c22 c21)
+        (adj c22 c23)  (adj c23 c22)
+        (adj c11 c12)  (adj c12 c11)
+        (adj c13 c14)  (adj c14 c13)
+        (adj c14 c15)  (adj c15 c14)
+        (adj c51 c41)  (adj c41 c51)
+        (adj c41 c31)  (adj c31 c41)
+        (adj c21 c11)  (adj c11 c21)
+        (adj c52 c42)  (adj c42 c52)
+        (adj c42 c32)  (adj c32 c42)
+        (adj c22 c12)  (adj c12 c22)
+        (adj c53 c43)  (adj c43 c53)
+        (adj c43 c33)  (adj c33 c43)
+        (adj c33 c23)  (adj c23 c33)
+        (adj c23 c13)  (adj c13 c23)
+        (adj c54 c44)  (adj c44 c54)
+        (adj c44 c34)  (adj c34 c44)
+        (adj c55 c45)  (adj c45 c55)
+        (adj c45 c35)  (adj c35 c45)
     )
     (:goal (and
         (on-belt p011)
         (scanned p011)
-        (switch-on the-button)
+        (switch-on Button)
     ))
 )

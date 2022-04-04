@@ -1,102 +1,78 @@
 (define (problem problem-ext-2)
     (:domain domain-ext)
     (:objects 
-        C11 - cell
-        C12 - cell
-        C13 - cell
-        C14 - cell
-        C15 - cell
+        c11 c12 c13 c14 c15 - cell
+        c21 c22 c23 c24 c25 - cell
+        c31 c32 c33 c34 c35 - cell
+        c41 c42 c43 c44 c45 - cell
+        c51 c52 c53 c54 c55 - cell
 
-        C21 - cell
-        C22 - cell
-        C23 - cell
-        C24 - cell
-        C25 - cell
-
-        C31 - cell
-        C32 - cell
-        C33 - cell
-        C34 - cell
-        C35 - cell
-
-        C41 - cell
-        C42 - cell
-        C43 - cell
-        C44 - cell
-        C45 - cell
-
-        C51 - cell
-        C52 - cell
-        C53 - cell
-        C54 - cell
-        C55 - cell
-
-        MailBot - mailbot
-        Belt - belt 
+        the-mailbot - mailbot
+        the-belt - belt 
         p001 - lightpack 
         p010 - lightpack 
         p011 - heavypack 
-        Scanner - scanner
-        Button - button 
-        PowerStn - charger 
-        DeliveryBot - delbot 
+        the-scanner - scanner
+        the-button - button 
+        the-charger - charger 
+        the-delbot - delbot 
                
     )
     
     (:init
-        (adj C23 Belt)
-        (adj C35 Belt) 
-        (adj C15 Belt)
-        (adj C34 Belt) 
-        (adj C14 Belt)
+        (adj c23 the-belt)
+        (adj c35 the-belt) 
+        (adj c15 the-belt)
+        (adj c34 the-belt) 
+        (adj c14 the-belt)
 
-        (at p001 C51) 
-        (at p010 C53) 
-        (at p011 C55)
+        (at p001 c51) 
+        (at p010 c53) 
+        (at p011 c55)
         
-        (at Button C35) 
+        (at the-button c35) 
 
-        (at Scanner C11)
+        (at the-scanner c11)
 
-        (at MailBot C33)
-        (at DeliveryBot C15)
+        (at the-mailbot c33)
+        (at the-delbot c15)
 
-        (at PowerStn C31)
+        (at the-charger c31)
 
-        (= (battery-level MailBot) 10)
-        (= (battery-level DeliveryBot) 10)
+        (= (battery-level the-mailbot) 10)
+        (= (battery-level the-delbot) 10)
 
-        (adj C51 C52)  (adj C52 C51)  
-        (adj C52 C53)  (adj C53 C52)
-        (adj C53 C54)  (adj C54 C53)
-        (adj C54 C55)  (adj C55 C54)
-        (adj C41 C42)  (adj C42 C41)
-        (adj C42 C43)  (adj C43 C42)
-        (adj C43 C44)  (adj C44 C43)
-        (adj C44 C45)  (adj C45 C44)
-        (adj C31 C32)  (adj C32 C31)
-        (adj C32 C33)  (adj C33 C32)
-        (adj C33 C34)  (adj C34 C33)
-        (adj C34 C35)  (adj C35 C34)
-        (adj C21 C22)  (adj C22 C21)
-        (adj C22 C23)  (adj C23 C22)
-        (adj C11 C12)  (adj C12 C11)
-        (adj C13 C14)  (adj C14 C13)
-        (adj C14 C15)  (adj C15 C14)
-        (adj C51 C41)  (adj C41 C51)
-        (adj C41 C31)  (adj C31 C41)
-        (adj C21 C11)  (adj C11 C21)
-        (adj C52 C42)  (adj C42 C52)
-        (adj C42 C32)  (adj C32 C42)
-        (adj C22 C12)  (adj C12 C22)
-        (adj C53 C43)  (adj C43 C53)
-        (adj C43 C33)  (adj C33 C43)
-        (adj C33 C23)  (adj C23 C33)
-        (adj C23 C13)  (adj C13 C23)
-        (adj C54 C44)  (adj C44 C54)
-        (adj C44 C34)  (adj C34 C44)
-        (adj C55 C45)  (adj C45 C55)
-        (adj C45 C35)  (adj C35 C45)
+        (adj c51 c52)  (adj c52 c51)  
+        (adj c52 c53)  (adj c53 c52)
+        (adj c53 c54)  (adj c54 c53)
+        (adj c54 c55)  (adj c55 c54)
+        (adj c41 c42)  (adj c42 c41)
+        (adj c42 c43)  (adj c43 c42)
+        (adj c43 c44)  (adj c44 c43)
+        (adj c44 c45)  (adj c45 c44)
+        (adj c31 c32)  (adj c32 c31)
+        (adj c32 c33)  (adj c33 c32)
+        (adj c33 c34)  (adj c34 c33)
+        (adj c34 c35)  (adj c35 c34)
+        (adj c21 c22)  (adj c22 c21)
+        (adj c22 c23)  (adj c23 c22)
+        (adj c11 c12)  (adj c12 c11)
+        (adj c13 c14)  (adj c14 c13)
+        (adj c14 c15)  (adj c15 c14)
+        (adj c51 c41)  (adj c41 c51)
+        (adj c41 c31)  (adj c31 c41)
+        (adj c21 c11)  (adj c11 c21)
+        (adj c52 c42)  (adj c42 c52)
+        (adj c42 c32)  (adj c32 c42)
+        (adj c22 c12)  (adj c12 c22)
+        (adj c53 c43)  (adj c43 c53)
+        (adj c43 c33)  (adj c33 c43)
+        (adj c33 c23)  (adj c23 c33)
+        (adj c23 c13)  (adj c13 c23)
+        (adj c54 c44)  (adj c44 c54)
+        (adj c44 c34)  (adj c34 c44)
+        (adj c55 c45)  (adj c45 c55)
+        (adj c45 c35)  (adj c35 c45)
 
     )
     (:goal (and
