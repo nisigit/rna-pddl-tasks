@@ -133,7 +133,7 @@
         :precondition (and
             (at ?who ?where)
             (bot-holding ?who ?what)
-            (>= (battery ?who) 1)
+            (>= (battery-level ?who) 1)
         )
         :effect (and 
             (at ?what ?where)
