@@ -21,6 +21,17 @@
         (battery-level ?bot - bot)
     )
 
+    (:action recharge
+        :parameters (?who - bot ?where - cell ?how - charger)
+        :precondition (and 
+            (at ?who ?where)
+            (at ?how ?where)
+        )
+        :effect (and
+            (assign (battery-level ?who) 15)
+         )
+    )
+
     (:action move-not-holding 
         :parameters (?who - bot ?from - cell ?to - cell)
         :precondition (and
@@ -223,15 +234,5 @@
         )
     )
 
-    (:action recharge
-        :parameters (?who - bot ?where - cell ?how - charger)
-        :precondition (and 
-            (at ?who ?where)
-            (at ?how ?where)
-        )
-        :effect (and
-            (assign (battery-level ?who) 15)
-         )
-    )
 )
 

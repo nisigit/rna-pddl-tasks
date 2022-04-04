@@ -9,19 +9,18 @@
         p010 - package
         p011 - package
 
-        belt-4-1 - belt
-        belt-5-1 - belt
+        the-belt - belt
 
-        cell-1-1 cell-1-2 cell-1-3 cell-1-4 cell-1-5 - cell
-        cell-2-1 cell-2-2 cell-2-3 cell-2-4 cell-2-5 - cell
-        cell-3-1 cell-3-2 cell-3-3 cell-3-4 cell-3-5 - cell
-        cell-4-2 cell-4-3 cell-4-4 cell-4-5 - cell
-        cell-5-2 cell-5-3 cell-5-4 cell-5-5 - cell
+        c11 c12 c13 c14 c15 - cell
+        c21 c22 c23 c24 c25 - cell
+        c31 c32 c33 c34 c35 - cell
+        c42 c43 c44 c45 - cell
+        c52 c53 c54 c55 - cell
     )
 
     (:init
         ; Mailbot
-        (at the-mailbot cell-5-2)
+        (at the-mailbot c52)
         (not (holding-pac the-mailbot))
         (not (holding-scan the-mailbot))
         (not (holding the-scanner))
@@ -30,72 +29,57 @@
         (not (holding p011))
 
         ; Scanner
-        (at the-scanner cell-5-5)
+        (at the-scanner c55)
 
         ; belt/button is off
-        (at the-switch cell-1-1)
+        (at the-switch c11)
         (not (switch-on the-switch))
 
         ; packages
-        (at p001 cell-1-5)
-        (at p010 cell-5-4)
-        (at p011 cell-2-1)
+        (at p001 c15)
+        (at p010 c54)
+        (at p011 c21)
         (not (scanned p001))
         (not (scanned p010))
         (not (scanned p011))
 
-        (not(on-belt p001))
-        (not(on-belt p010))
-        (not(on-belt p011))
+        (not (on-belt p001))
+        (not (on-belt p010))
+        (not (on-belt p011))
 
         ; row adjacency
-        (adj cell-1-1 cell-1-2) (adj cell-1-2 cell-1-1)
-        (adj cell-1-2 cell-1-3) (adj cell-1-3 cell-1-2)
-        (adj cell-1-3 cell-1-4) (adj cell-1-4 cell-1-3)
-        ; (adj cell-1-4 cell-1-5) (adj cell-1-5 cell-1-4)
-        (adj cell-2-1 cell-2-2) (adj cell-2-2 cell-2-1)
-        (adj cell-2-2 cell-2-3) (adj cell-2-3 cell-2-2)
-        (adj cell-2-3 cell-2-4) (adj cell-2-4 cell-2-4)
-        (adj cell-2-4 cell-2-5) (adj cell-2-5 cell-2-4)
-        (adj cell-3-1 cell-3-2) (adj cell-3-2 cell-3-1)
-        (adj cell-3-2 cell-3-3) (adj cell-3-3 cell-3-2)
-        ; (adj cell-3-3 cell-3-4) (adj cell-3-4 cell-3-3)
-        ; (adj cell-3-4 cell-3-5) (adj cell-3-5 cell-3-4)
-        ; (adj cell-4-1 cell-4-2) (adj cell-4-2 cell-4-1)
-        (adj cell-4-2 cell-4-3) (adj cell-4-3 cell-4-2)
-        (adj cell-4-3 cell-4-4) (adj cell-4-4 cell-4-3)
-        ; (adj cell-4-4 cell-4-5) (adj cell-4-5 cell-4-4)
-        ; (adj cell-5-1 cell-5-2) (adj cell-5-2 cell-5-1)
-        ; (adj cell-5-2 cell-5-3) (adj cell-5-3 cell-5-2)
-        (adj cell-5-3 cell-5-4) (adj cell-5-4 cell-5-3)
-        ; (adj cell-5-4 cell-5-5) (adj cell-5-5 cell-5-4)
+        (adj c11 c12) (adj c12 c11)
+        (adj c12 c13) (adj c13 c12)
+        (adj c13 c14) (adj c14 c13)
+        (adj c21 c22) (adj c22 c21)
+        (adj c22 c23) (adj c23 c22)
+        (adj c23 c24) (adj c24 c24)
+        (adj c24 c25) (adj c25 c24)
+        (adj c31 c32) (adj c32 c31)
+        (adj c32 c33) (adj c33 c32)
+        (adj c42 c43) (adj c43 c42)
+        (adj c43 c44) (adj c44 c43)
+        (adj c53 c54) (adj c54 c53)
 
         ; same column adjacency
 
-        ; (adj cell-1-1 cell-2-1) (adj cell-2-1 cell-1-1)
-        (adj cell-2-1 cell-3-1) (adj cell-3-1 cell-2-1)
-        ; (adj cell-3-1 cell-4-1) (adj cell-4-1 cell-3-1)
-        ; (adj cell-4-1 cell-5-1) (adj cell-5-1 cell-4-1)
-        ; (adj cell-1-2 cell-2-2) (adj cell-2-2 cell-1-2)
-        (adj cell-2-2 cell-3-2) (adj cell-3-2 cell-2-2)
-        ; (adj cell-3-2 cell-4-2) (adj cell-4-2 cell-3-2)
-        (adj cell-4-2 cell-5-2) (adj cell-5-2 cell-4-2)
-        ; (adj cell-1-3 cell-2-3) (adj cell-2-3 cell-1-3)
-        ; (adj cell-2-3 cell-3-3) (adj cell-3-3 cell-2-3)
-        (adj cell-3-3 cell-4-3) (adj cell-4-3 cell-3-3)
-        (adj cell-4-3 cell-5-3) (adj cell-5-3 cell-4-3)
-        (adj cell-1-4 cell-2-4) (adj cell-2-4 cell-1-4)
-        (adj cell-2-4 cell-3-4) (adj cell-3-4 cell-2-4)
-        (adj cell-3-4 cell-4-4) (adj cell-4-4 cell-3-4)
-        (adj cell-4-4 cell-5-4) (adj cell-5-4 cell-4-4)
-        (adj cell-1-5 cell-2-5) (adj cell-2-5 cell-1-5)
-        (adj cell-2-5 cell-3-5) (adj cell-3-5 cell-2-5)
-        (adj cell-3-5 cell-4-5) (adj cell-4-5 cell-3-5)
-        (adj cell-4-5 cell-5-5) (adj cell-5-5 cell-4-5)
+        (adj c21 c31) (adj c31 c21)
+        (adj c22 c32) (adj c32 c22)
+        (adj c42 c52) (adj c52 c42)
+        (adj c33 c43) (adj c43 c33)
+        (adj c43 c53) (adj c53 c43)
+        (adj c14 c24) (adj c24 c14)
+        (adj c24 c34) (adj c34 c24)
+        (adj c34 c44) (adj c44 c34)
+        (adj c44 c54) (adj c54 c44)
+        (adj c15 c25) (adj c25 c15)
+        (adj c25 c35) (adj c35 c25)
+        (adj c35 c45) (adj c45 c35)
+        (adj c45 c55) (adj c55 c45)
 
         ; adjacent to belt
-        (adj cell-4-2 belt-4-1)
-        (adj cell-5-2 belt-5-1)
+        (adj c42 the-belt)
+        (adj c52 the-belt)
     )
 
     (:goal (and (scanned p001)
