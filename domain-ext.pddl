@@ -24,10 +24,10 @@
     (:action move-not-holding 
         :parameters (?who - bot ?from - cell ?to - cell)
         :precondition (and 
+            (not (holding ?who))
+            (>= (battery-level ?who) 1)
             (at ?who ?from)
             (adj ?from ?to)
-            (>= (battery-level ?who) 1)
-            (not (holding ?who))
         )
         :effect (and 
             (not(at ?who ?from))
@@ -37,10 +37,10 @@
     (:action move-holding
         :parameters (?who - bot ?from - cell ?to - cell)
         :precondition (and 
+            (holding ?who)
+            (>= (battery-level ?who) 2)
             (at ?who ?from)
             (adj ?from ?to)
-            (>= (battery-level ?who) 2)
-            (holding ?who)
         )
         :effect (and 
             (not(at ?who ?from))
@@ -50,15 +50,13 @@
        (:action move-with-heavypack
         :parameters (?mb - mailbot ?db - delbot ?from - cell ?to - cell ?what - heavypack)
         :precondition (and 
+            (bot-holding ?mb ?what)
+            (bot-holding ?db ?what)
+            (>= (battery-level ?mb) 2)
+            (>= (battery-level ?db) 2)
             (at ?mb ?from)
             (at ?db ?from)
             (adj ?from ?to)
-            (>= (battery-level ?mb) 2)
-            (>= (battery-level ?db) 2)
-            (bot-holding ?mb ?what)
-            (bot-holding ?db ?what)
-            (holding ?mb)
-            (holding ?db)
         )
         :effect (and 
             (not (at ?mb ?from))
@@ -70,14 +68,12 @@
         ))
 
     (:action pick-scanner 
-        :parameters (?who - mailbot ?what - scanner ?where - cell)
+        :parameters (?who - bot ?what - scanner ?where - cell)
         :precondition (and
             (at ?who ?where)
             (at ?what ?where)
             (not (holding ?who)) 
-            (not (bot-holding ?who ?what))
-            (>= (battery-level ?who) 1)
-            )
+        )
 
         :effect (and 
             (not(at ?what ?where))
@@ -91,9 +87,7 @@
         :precondition (and 
             (at ?who ?where)
             (at ?what ?where)
-            (>= (battery-level ?who) 1)
             (not (holding ?who))
-            (not (bot-holding ?who ?what))
         )
         :effect (and 
             (not(at ?what ?where))
@@ -105,13 +99,13 @@
     (:action pick-heavypack
         :parameters (?mb - mailbot ?db - delbot ?what - heavypack ?where - cell)
         :precondition (and 
-            (at ?mb ?where)
-            (at ?db ?where)
-            (at ?what ?where)
             (not (holding ?mb))
             (not (holding ?db))
             (not (bot-holding ?mb ?what))
             (not (bot-holding ?db ?what))
+            (at ?mb ?where)
+            (at ?db ?where)
+            (at ?what ?where)
         )
         :effect (and 
             (not (at ?what ?where))
@@ -127,8 +121,6 @@
         :precondition (and
             (at ?who ?where)
             (bot-holding ?who ?what)
-            (holding ?who)
-            (>= (battery-level ?who) 1)
         )
         :effect (and 
             (at ?what ?where)
@@ -138,12 +130,10 @@
     )
 
     (:action drop-scanner 
-        :parameters (?who - mailbot ?what - scanner ?where - cell)
+        :parameters (?who - bot ?what - scanner ?where - cell)
         :precondition (and
             (at ?who ?where)
             (bot-holding ?who ?what)
-            (holding ?who)
-            (>= (battery-level ?who) 1)
         )
         :effect (and 
             (at ?what ?where)
@@ -158,11 +148,7 @@
             (at ?mb ?where)
             (at ?db ?where)
             (bot-holding ?mb ?what)
-            (holding ?mb)
-            (>= (battery-level ?mb) 1)
             (bot-holding ?db ?what)
-            (holding ?db)
-            (>= (battery-level ?db) 1)
         )
         :effect (and 
             (at ?what ?where)
@@ -180,7 +166,6 @@
             (not (switch-on ?what))
             (at ?what ?where)
             (at ?who ?where)
-            (>= (battery-level ?who) 1)
          )
         :effect (and 
             (switch-on ?what)
@@ -191,7 +176,6 @@
         :parameters (?who - mailbot ?what - package ?how - scanner ?where - cell)
         :precondition (and 
             (not (scanned ?what))
-            (>= (battery-level ?who) 1)
             (at ?what ?where)
             (at ?who ?where)
             (bot-holding ?who ?how)        
@@ -205,7 +189,6 @@
         :precondition (and 
             (bot-holding ?who ?what)
             (at ?who ?where)
-            (>= (battery-level ?who) 1)
             (adj ?where ?belt)
             (scanned ?what)
             (not (on-belt ?what))
@@ -224,8 +207,6 @@
             (bot-holding ?db ?what)
             (at ?mb ?where)
             (at ?db ?where)
-            (>= (battery-level ?mb) 1)
-            (>= (battery-level ?db) 1)
             (adj ?where ?belt)
             (scanned ?what)
             (not (on-belt ?what))
@@ -244,7 +225,6 @@
         :precondition (and 
             (at ?who ?where)
             (at ?how ?where)
-
         )
         :effect (and
             (assign (battery-level ?who) 15)
