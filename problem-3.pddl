@@ -58,7 +58,7 @@
         (adj c31 c32) (adj c32 c31)
         (adj c32 c33) (adj c33 c32)
         (adj c42 c43) (adj c43 c42)
-        (adj c43 c44) (adj c44 c43)
+        ; (adj c43 c44) (adj c44 c43)
         (adj c53 c54) (adj c54 c53)
 
         ; same column adjacency
