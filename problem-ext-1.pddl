@@ -12,16 +12,16 @@
 
         the-belt - belt
 
-        cell11 cell12 cell13 cell14 cell15 - cell
-        cell21 cell22 cell23 - cell
-        cell31 cell32 cell33 cell34 cell35 - cell
-        cell41 cell42 cell43 cell44 cell45 - cell
-        cell51 cell52 cell53 cell54 cell55 - cell
+        c11 c12 c13 c14 c15 - cell
+        c21 c22 c23 - cell
+        c31 c32 c33 c34 c35 - cell
+        c41 c42 c43 c44 c45 - cell
+        c51 c52 c53 c54 c55 - cell
     )
 
     (:init
         ; Mailbot
-        (at the-mailbot cell33)
+        (at the-mailbot c33)
         (not (holding-pac the-mailbot))
         (not (holding-scan the-mailbot))
         (not (holding the-scanner))
@@ -33,19 +33,19 @@
         (= (battery-level the-mailbot) 10)
 
         ; Scanner
-        (at the-scanner cell11)
+        (at the-scanner c11)
 
         ; belt/button is off
-        (at the-switch cell35)
+        (at the-switch c35)
         (not (switch-on the-switch))
 
         ; charger
-        (at the-charger cell31)
+        (at the-charger c31)
 
         ; packages
-        (at p001 cell51)
-        (at p010 cell53)
-        (at p011 cell55)
+        (at p001 c51)
+        (at p010 c53)
+        (at p011 c55)
         (not (scanned p001))
         (not (scanned p010))
         (not (scanned p011))
