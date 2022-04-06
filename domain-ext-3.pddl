@@ -204,6 +204,19 @@
         )
     )
 
+    (:action switch-belt-off
+        :parameters (?who - bot ?what - button ?where - cell)
+        :precondition (and 
+            (switch-on ?what)
+            (at ?what ?where)
+            (at ?who ?where)
+        )
+        :effect (and 
+            (not (switch-on ?what))
+        )
+    )
+    
+
     (:action scan-pack 
         :parameters (?who - mailbot ?what - package ?how - scanner ?where - cell)
         :precondition (and 
@@ -217,7 +230,7 @@
         )
     )
     (:action place-lightpack-on-belt 
-        :parameters (?who - bot ?what - lightpack ?belt - belt ?where - cell)
+        :parameters (?who - bot ?what - lightpack ?belt - belt ?where - cell ?button - button)
         :precondition (and 
             (bot-holding ?who ?what)
             (at ?who ?where)
@@ -225,6 +238,7 @@
             (scanned ?what)
             (not (on-belt ?what))
             (>= (battery-level ?who) 0.2)
+            (switch-on the-button)
         )
         :effect (and 
             (not(bot-holding ?who ?what))
@@ -235,7 +249,7 @@
     )
 
     (:action place-heavypack-on-belt 
-        :parameters (?mb - mailbot ?db - delbot ?what - heavypack ?belt - belt ?where - cell)
+        :parameters (?mb - mailbot ?db - delbot ?what - heavypack ?belt - belt ?where - cell ?button - button)
         :precondition (and 
             (bot-holding ?mb ?what)
             (bot-holding ?db ?what)
@@ -246,6 +260,7 @@
             (not (on-belt ?what))
             (>= (battery-level ?mb) 0.2)
             (>= (battery-level ?db) 0.2)
+            (switch-on the-button)
         )
         :effect (and 
             (not (bot-holding ?mb ?what))
