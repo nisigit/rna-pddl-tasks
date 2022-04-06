@@ -1,4 +1,4 @@
-(define (domain domain-ext)
+(define (domain domain-ext-1)
 
     (:requirements :adl :fluents)
 

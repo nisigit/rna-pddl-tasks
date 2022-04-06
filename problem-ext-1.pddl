@@ -1,5 +1,5 @@
 (define (problem problem-ext-1)
-    (:domain domain-ext)
+    (:domain domain-ext-1)
 
     (:objects 
         the-mailbot - mailbot
