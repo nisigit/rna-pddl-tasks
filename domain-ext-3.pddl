@@ -1,4 +1,4 @@
-(define (domain domain-ext)
+(define (domain domain-ext-3)
 
     (:requirements :adl :fluents)
     (:types bot package scanner button charger area - object
@@ -34,17 +34,17 @@
          )
     )
 
-    (:action recharge-scanner
-        :parameters (?who - bot ?where - cell ?scanner - scanner ?how - charger)
-        :precondition (and 
-            (at ?who ?where)
-            (at ?how ?where)
-            (bot-holding ?who ?scanner)
-        )
-        :effect (and 
-            (assign (battery-level ?scanner) 2)
-        )
-    )
+    ; (:action recharge-scanner
+    ;     :parameters (?who - bot ?where - cell ?scanner - scanner ?how - charger)
+    ;     :precondition (and 
+    ;         (at ?who ?where)
+    ;         (at ?how ?where)
+    ;         (bot-holding ?who ?scanner)
+    ;     )
+    ;     :effect (and 
+    ;         (assign (battery-level ?scanner) 2)
+    ;     )
+    ; )
     
 
     (:action move-not-holding 
@@ -237,11 +237,11 @@
             (at ?what ?where)
             (at ?who ?where)
             (bot-holding ?who ?how)
-            (>= (battery-level ?how) 0.5)
+            ; (>= (battery-level ?how) 0.5)
         )
         :effect (and 
             (scanned ?what)
-            (decrease (battery-level ?scanner) 0.5)
+            ; (decrease (battery-level ?how) 0.5)
         )
     )
     (:action place-lightpack-on-belt 
@@ -253,7 +253,7 @@
             (scanned ?what)
             (not (on-belt ?what))
             (>= (battery-level ?who) 0.2)
-            (switch-on the-button)
+            (switch-on ?button)
         )
         :effect (and 
             (not(bot-holding ?who ?what))
@@ -275,7 +275,7 @@
             (not (on-belt ?what))
             (>= (battery-level ?mb) 0.2)
             (>= (battery-level ?db) 0.2)
-            (switch-on the-button)
+            (switch-on ?button)
         )
         :effect (and 
             (not (bot-holding ?mb ?what))

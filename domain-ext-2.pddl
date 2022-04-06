@@ -1,4 +1,4 @@
-(define (domain domain-ext)
+(define (domain domain-ext-2)
 
     (:requirements :adl :fluents)
     (:types bot package scanner button charger area - object

@@ -40,7 +40,7 @@
 
         (= (battery-level the-mailbot) 10)
         (= (battery-level the-delbot) 10)
-        (= (battery-level the-scanner) 0)
+        ; (= (battery-level the-scanner) 2)
 
         (adj c51 c52)  (adj c52 c51)  
         (adj c52 c53)  (adj c53 c52)

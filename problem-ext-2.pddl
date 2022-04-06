@@ -1,5 +1,5 @@
 (define (problem problem-ext-2)
-    (:domain domain-ext)
+    (:domain domain-ext-2)
     (:objects 
         c11 c12 c13 c14 c15 - cell
         c21 c22 c23 c24 c25 - cell
