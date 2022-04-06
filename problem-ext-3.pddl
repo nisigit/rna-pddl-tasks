@@ -1,5 +1,5 @@
-(define (problem problem-ext-2)
-    (:domain domain-ext)
+(define (problem problem-ext-3)
+    (:domain domain-ext-3)
     (:objects 
         c11 c12 c13 c14 c15 - cell
         c21 c22 c23 c24 c25 - cell
@@ -40,6 +40,7 @@
 
         (= (battery-level the-mailbot) 10)
         (= (battery-level the-delbot) 10)
+        (= (battery-level the-scanner) 0)
 
         (adj c51 c52)  (adj c52 c51)  
         (adj c52 c53)  (adj c53 c52)

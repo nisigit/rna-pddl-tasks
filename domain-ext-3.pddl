@@ -20,7 +20,7 @@
         (on-belt ?package - package)
     )
     (:functions
-        (battery-level ?bot - bot)
+        (battery-level ?what - object)
     )
 
     (:action recharge
@@ -33,6 +33,19 @@
             (assign (battery-level ?who) 15)
          )
     )
+
+    (:action recharge-scanner
+        :parameters (?who - bot ?where - cell ?scanner - scanner ?how - charger)
+        :precondition (and 
+            (at ?who ?where)
+            (at ?how ?where)
+            (bot-holding ?who ?scanner)
+        )
+        :effect (and 
+            (assign (battery-level ?scanner) 2)
+        )
+    )
+    
 
     (:action move-not-holding 
         :parameters (?who - bot ?from - cell ?to - cell)
@@ -223,10 +236,12 @@
             (not (scanned ?what))
             (at ?what ?where)
             (at ?who ?where)
-            (bot-holding ?who ?how)        
+            (bot-holding ?who ?how)
+            (>= (battery-level ?how) 0.5)
         )
         :effect (and 
             (scanned ?what)
+            (decrease (battery-level ?scanner) 0.5)
         )
     )
     (:action place-lightpack-on-belt 
