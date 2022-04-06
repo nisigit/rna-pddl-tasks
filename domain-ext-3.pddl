@@ -145,11 +145,13 @@
         :precondition (and
             (at ?who ?where)
             (bot-holding ?who ?what)
+            (>= (battery-level ?who) 0.2)
         )
         :effect (and 
             (at ?what ?where)
             (not (bot-holding ?who ?what))
             (not (holding ?who))
+            (decrease (battery-level ?who) 0.2)
         )
     )
 
@@ -158,11 +160,13 @@
         :precondition (and
             (at ?who ?where)
             (bot-holding ?who ?what)
+            (>= (battery-level ?who) 0.2)
         )
         :effect (and 
             (at ?what ?where)
             (not (bot-holding ?who ?what))
             (not (holding ?who))
+            (decrease (battery-level ?who) 0.2)
         )
     )
 
@@ -173,6 +177,8 @@
             (at ?db ?where)
             (bot-holding ?mb ?what)
             (bot-holding ?db ?what)
+            (>= (battery-level ?mb) 0.2)
+            (>= (battery-level ?db) 0.2)
         )
         :effect (and 
             (at ?what ?where)
@@ -180,6 +186,8 @@
             (not (bot-holding ?db ?what))
             (not (holding ?mb))
             (not (holding ?mb))
+            (decrease (battery-level ?mb) 0.2)
+            (decrease (battery-level ?db) 0.2)
         )
     )
 
@@ -216,11 +224,13 @@
             (adj ?where ?belt)
             (scanned ?what)
             (not (on-belt ?what))
+            (>= (battery-level ?who) 0.2)
         )
         :effect (and 
             (not(bot-holding ?who ?what))
             (not(holding ?who))
             (on-belt ?what)
+            (decrease (battery-level ?who) 0.2)
         )
     )
 
@@ -234,6 +244,8 @@
             (adj ?where ?belt)
             (scanned ?what)
             (not (on-belt ?what))
+            (>= (battery-level ?mb) 0.2)
+            (>= (battery-level ?db) 0.2)
         )
         :effect (and 
             (not (bot-holding ?mb ?what))
@@ -241,6 +253,8 @@
             (not (holding ?mb))
             (not (holding ?db))
             (on-belt ?what)
+            (decrease (battery-level ?mb) 0.2)
+            (decrease (battery-level ?db) 0.2)
         )
     )
 
